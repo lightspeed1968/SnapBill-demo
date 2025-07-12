@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SnapBill Upload</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    input, button { margin: 10px 0; display: block; }
+    #output { background: #f4f4f4; padding: 10px; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>SnapBill – Upload & Convert</h1>
+  <input type="file" id="fileInput" />
+  <input type="email" id="emailInput" placeholder="Your Email" />
+  <button onclick="handleUpload()">Convert & Send</button>
+  <pre id="output"></pre>
+
+  <script>
+    function handleUpload() {
+      const file = document.getElementById('fileInput').files[0];
+      const email = document.getElementById('emailInput').value;
+      if (!file || !email) return alert("Please upload a file and enter email.");
+
+      const simulatedText = "Invoice: SnapBill\nAmount: $123.45\nDue: 2025-07-30";
+      document.getElementById('output').textContent = simulatedText;
+
+      fetch('/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, content: simulatedText })
+      }).then(res => {
+        if (res.ok) alert("Invoice sent!");
+        else alert("Failed to send.");
+      });
+    }
+  </script>
+</body>
+</html>
